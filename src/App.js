@@ -118,15 +118,17 @@ function App() {
     });
   };
   let updateExpenses = (tmpExpense) => {
-    setExpenses([...expenses, tmpExpense]);
-    let uploadExpense = {
-      ...tmpExpense,
-      user: userData.id,
-    };
-    axios
-      .post(`${baseUrl}/post`, { uploadExpense })
-      .then((res) => console.log(res));
-    setShowModal(!showModal);
+    if (tmpExpense.expense) {
+      setExpenses([...expenses, tmpExpense]);
+      let uploadExpense = {
+        ...tmpExpense,
+        user: userData.id,
+      };
+      axios
+        .post(`${baseUrl}/post`, { uploadExpense })
+        .then((res) => console.log(res));
+      setShowModal(!showModal);
+    }
   };
   let toggleCardDetail = (expense) => {
     setCardDetail(expense);
@@ -147,7 +149,11 @@ function App() {
         ))}
       </div>
       {showModal && (
-        <Modal updateExpenses={updateExpenses} loggOutUser={loggOutUser} />
+        <Modal
+          updateExpenses={updateExpenses}
+          loggOutUser={loggOutUser}
+          userData={userData}
+        />
       )}
       <div className="summary-card">
         <div className="total-title">

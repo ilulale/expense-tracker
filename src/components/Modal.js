@@ -1,12 +1,20 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
+import config from "../config";
 
-function Modal({ updateExpenses, loggOutUser }) {
+function Modal({ updateExpenses, loggOutUser, userData }) {
   let [splits, setSplits] = useState([]);
   let [type, setType] = useState();
   let [ammount, setAmmount] = useState();
   let [selectedMenu, setSelectedMenu] = useState(0);
   let [categories, setCategories] = useState(["Grocery", "Home"]);
   let [editInput, setEditInput] = useState();
+
+  useEffect(() => {
+    axios.get(`${baseUrl}/${userData.id}`).then((res) => {
+      setCategories(res.data.categories);
+    });
+  }, []);
 
   let setSelectedClass = (option, ogClass) => {
     if (option == selectedMenu) {
@@ -15,6 +23,8 @@ function Modal({ updateExpenses, loggOutUser }) {
       return `${ogClass} not-selected`;
     }
   };
+
+  let baseUrl = `${config.baseUrl}/category`;
 
   return (
     <div className="modal">
@@ -119,8 +129,17 @@ function Modal({ updateExpenses, loggOutUser }) {
           <div
             className="edit-modal-cta"
             onClick={() => {
-              setCategories([...categories, editInput]);
-              setSelectedMenu(0);
+              if (editInput) {
+                axios
+                  .post(`${baseUrl}/${userData.id}`, {
+                    categories: [...categories, editInput],
+                  })
+                  .then((res) => {
+                    console.log(res.data);
+                  });
+                setCategories([...categories, editInput]);
+                setSelectedMenu(0);
+              }
             }}
           >
             Add

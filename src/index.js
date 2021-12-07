@@ -7,7 +7,7 @@ import { BrowserRouter, HashRouter } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <HashRouter basename="/expense-tracker">
+    <HashRouter>
       <App />
     </HashRouter>
   </React.StrictMode>,

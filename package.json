@@ -1,7 +1,7 @@
 {
   "name": "expense_tracker",
-  "homepage": "http://ilulale.github.io/expense-tracker",
   "version": "0.1.0",
+  "homepage": "https://ilulale.github.io/expense-tracker",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.15.0",
@@ -11,6 +11,7 @@
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
   },
@@ -39,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
   }
 }

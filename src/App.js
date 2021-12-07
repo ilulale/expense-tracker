@@ -133,12 +133,19 @@ function App() {
   let toggleCardDetail = (expense) => {
     setCardDetail(expense);
   };
+  let closeModal = () => {
+    setShowModal(false);
+  };
 
   let AppContainer = () => (
     <div className="app-container">
       {/* <div className="error-bar">ID : {userData.id}</div> */}
       {cardDetail.expense && (
-        <CardDetail detail={cardDetail} updateSplit={updateSplit} />
+        <CardDetail
+          detail={cardDetail}
+          updateSplit={updateSplit}
+          toggleCardDetail={toggleCardDetail}
+        />
       )}
       <div className="recent-cards">
         {expenses.map((expense) => (
@@ -153,6 +160,7 @@ function App() {
           updateExpenses={updateExpenses}
           loggOutUser={loggOutUser}
           userData={userData}
+          closeModal={closeModal}
         />
       )}
       <div className="summary-card">

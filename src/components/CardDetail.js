@@ -1,10 +1,26 @@
 import React from "react";
 
-function CardDetail({ detail, updateSplit }) {
+function CardDetail({ detail, updateSplit, toggleCardDetail }) {
   let getBorder = detail.category == "income" ? " border-green" : " border-red";
   return (
     <div className="card-detail-container">
       <div className="card-detail-card">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          onClick={() => {
+            toggleCardDetail({});
+          }}
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
         <div className={`${getBorder} card-detail-titlebar`}>
           <div class="card-detail-title">{detail.category}</div>
           <div class="card-detail-expense">₹ {detail.expense}</div>

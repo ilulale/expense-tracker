@@ -99,6 +99,13 @@
     width: 20em;
     border-radius: 5px;
   }
+  svg {
+    height: 1em;
+    width: 1em;
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+  }
 }
 .modal-amount-input {
   margin-top: 1em;
@@ -224,6 +231,10 @@
     background-color: transparent;
     border: 0px solid;
   }
+  svg {
+    height: 1em;
+    width: 1em;
+  }
 }
 .edit-modal-cta {
   background-color: yellowgreen;
@@ -234,7 +245,11 @@
   margin-top: 1em;
   padding: 0.25em;
 }
-
+.modal-exit {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
 .logout-cta {
   color: white;
   background-color: red;
@@ -263,6 +278,11 @@
   padding: 1em 0.5em;
   border-radius: 0.5em;
   color: black;
+  svg {
+    height: 1em;
+    width: 1em;
+    float: right;
+  }
 }
 .card-detail-title {
   font-size: 1em;
@@ -280,6 +300,7 @@
   justify-content: space-between;
   width: 50vw;
   margin-bottom: 0.25em;
+  clear: right;
 }
 .card-detail-expense {
   font-weight: 700;

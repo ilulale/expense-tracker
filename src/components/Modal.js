@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import config from "../config";
 
-function Modal({ updateExpenses, loggOutUser, userData }) {
+function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
   let [splits, setSplits] = useState([]);
   let [type, setType] = useState();
   let [ammount, setAmmount] = useState();
@@ -31,6 +31,20 @@ function Modal({ updateExpenses, loggOutUser, userData }) {
       {selectedMenu == 0 && (
         <div className="modal-form">
           <div className="modal-type-dropdown">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              onClick={closeModal}
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
             <label>Type</label>
             <select
               onChange={(e) => {
@@ -118,7 +132,23 @@ function Modal({ updateExpenses, loggOutUser, userData }) {
       )}
       {selectedMenu == 1 && (
         <div className="edit-modal">
-          <label>Add New Category</label>
+          <label className="modal-exit">
+            Add New Category{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              onClick={closeModal}
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </label>
           <input
             type="text"
             placeholder="Home"

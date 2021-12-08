@@ -50,6 +50,21 @@ function App() {
 
   let baseUrl = `${config.baseUrl}/expenses`;
 
+  let handleExpenseDelete = (detail) => {
+    console.log(detail);
+    axios.post(`${baseUrl}/delete/${detail._id}`).then((res) => {
+      if (res.data.message == "success") {
+        let delIndex = expenses.findIndex(
+          (expense) => expense._id == detail._id
+        );
+        let tmpExpenses = [...expenses];
+        tmpExpenses.splice(delIndex, 1);
+        setExpenses(tmpExpenses);
+        toggleCardDetail({});
+      }
+    });
+  };
+
   let splitCorrection = () => {
     let totalCorrection = 0;
     expenses.map((expense) => {
@@ -145,6 +160,7 @@ function App() {
           detail={cardDetail}
           updateSplit={updateSplit}
           toggleCardDetail={toggleCardDetail}
+          handleExpenseDelete={handleExpenseDelete}
         />
       )}
       <div className="recent-cards">

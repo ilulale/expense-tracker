@@ -278,11 +278,15 @@
   padding: 1em 0.5em;
   border-radius: 0.5em;
   color: black;
+}
+.card-detail-nav-bar {
+  cursor: pointer;
   svg {
     height: 1em;
     width: 1em;
-    float: right;
   }
+  display: flex;
+  justify-content: space-between;
 }
 .card-detail-title {
   font-size: 1em;

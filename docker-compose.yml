@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  web:
+    image: ilulale:expensetracker
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3005:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true

@@ -211,6 +211,10 @@
 }
 .submenu-opt2 {
   margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+.submenu-opt3 {
+  margin-left: 0.5em;
 }
 
 .not-selected {
@@ -235,6 +239,35 @@
     height: 1em;
     width: 1em;
   }
+}
+.edit-room-cta {
+  margin-top: 0.75em;
+  padding: 0.5em 0.75em;
+  border-radius: 50px;
+  display: flex;
+  color: white;
+  input {
+    color: white;
+  }
+  cursor: pointer;
+  ::placeholder {
+    color: white;
+    font-weight: 600;
+  }
+  .edit-room-btn {
+    border-left: solid 1px white;
+    padding-left: 0.75em;
+  }
+  .edit-room-label {
+    width: 75%;
+  }
+}
+.bg-completed {
+  background-color: #86b049;
+  opacity: 0.75;
+}
+.bg-locked {
+  background-color: #555555;
 }
 .edit-modal-cta {
   background-color: yellowgreen;
@@ -358,4 +391,45 @@
   margin-top: 0.5em;
   text-align: right;
   width: 25%;
+}
+.room-modal-heading {
+  align-self: center;
+  font-size: 1.25em;
+}
+.room-modal-add-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  input {
+    font-size: 2em;
+    margin: 0.25em;
+  }
+  svg {
+    height: 2.5em;
+    width: 2.5em;
+    opacity: 0.6;
+  }
+}
+// .room-edit-prefix {
+//   width: 20%;
+// }
+// .room-edit-splits {
+//   margin-left: 1em;
+//   padding-left: 1em;
+// }
+.room-modal {
+  align-content: center;
+}
+.room-split-tag {
+  margin-top: 0.25em;
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+  padding: 0.25em 0.5em;
+  width: fit-content;
+  border-radius: 0.5em;
+  border: 1px solid #4c65f1;
+  color: #4c65f1;
+}
+.room-split-selection {
+  display: flex;
 }

@@ -9,10 +9,25 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
   let [selectedMenu, setSelectedMenu] = useState(0);
   let [categories, setCategories] = useState(["Grocery", "Home"]);
   let [editInput, setEditInput] = useState();
+  let [roomInput, setRoomInput] = useState();
+  let [room, setRoom] = useState();
+  let [prefixInput, setPrefixInput] = useState();
+  let [splitsInput, setSplitsInput] = useState();
+  let [roomSplits, setRoomSplits] = useState();
 
-  useEffect(() => {
+  useEffect(async () => {
     axios.get(`${baseUrl}/${userData.id}`).then((res) => {
       setCategories(res.data.categories);
+    });
+    let roomdb = await axios.get(`${config.baseUrl}/room/user/${userData.id}`);
+    roomdb = roomdb.data.roomInfo.room;
+    if (roomdb) {
+      setRoom(roomdb);
+    }
+    axios.get(`${config.baseUrl}/roomMap/${roomdb}`).then((res) => {
+      if (res.data.roomMap) {
+        setRoomSplits(res.data.roomMap.categories);
+      }
     });
   }, []);
 
@@ -71,7 +86,7 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
             <label>Split</label>
             <input
               type="number"
-              placeholder="Split between"
+              placeholder={splits[0] ? splits.length : "Split between"}
               onChange={(e) => {
                 if (e.target.value > 0 && e.target.value < 10) {
                   let Splitarray = new Array(parseInt(e.target.value)).fill(0);
@@ -82,7 +97,7 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
             {splits.map((split, index) => (
               <input
                 type="text"
-                placeholder="Name"
+                placeholder={split ? split.name : "Name"}
                 onChange={(e) => {
                   let tmpSplit = splits;
                   tmpSplit[index] = {
@@ -93,6 +108,26 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
                 }}
               />
             ))}
+            {roomSplits && (
+              <div className="room-split-selection">
+                {roomSplits.map((rs) => (
+                  <div
+                    className="room-split-tag"
+                    onClick={() => {
+                      let splitObj = rs.splits.map((s) => {
+                        return {
+                          name: s,
+                          paid: false,
+                        };
+                      });
+                      setSplits(splitObj);
+                    }}
+                  >
+                    {rs.prefix}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="modal-options">
             <div
@@ -175,6 +210,60 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
             Add
           </div>
           <div
+            className={`edit-room-cta ${!room ? "bg-locked" : "bg-completed"}`}
+          >
+            {!room && (
+              <>
+                <input
+                  type="text"
+                  placeholder="Room #ID"
+                  onChange={(e) => setRoomInput(e.target.value)}
+                ></input>
+                <div
+                  className="edit-room-btn"
+                  onClick={(e) => {
+                    axios
+                      .post(`${config.baseUrl}/room`, {
+                        userId: userData.id,
+                        room: roomInput,
+                      })
+                      .then((res) => {
+                        setRoom(roomInput);
+                        console.log(res);
+                      })
+                      .catch((e) => {
+                        console.log(e);
+                      });
+                  }}
+                >
+                  {" "}
+                  Join
+                </div>{" "}
+              </>
+            )}
+            {room && (
+              <>
+                <div className="edit-room-label">{room}</div>
+                <div className="edit-room-btn">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                    />
+                  </svg>
+                </div>{" "}
+              </>
+            )}
+          </div>
+          <div
             className="logout-cta"
             onClick={() => {
               localStorage.removeItem("userID");
@@ -186,6 +275,70 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
           </div>
         </div>
       )}
+      {selectedMenu == 2 && (
+        <div className="edit-modal room-modal">
+          <div className="room-modal-heading">Room Map</div>
+          <div className="room-modal-add-container">
+            <input
+              type="text"
+              placeholder="Prefix"
+              onChange={(e) => {
+                setPrefixInput(e.target.value);
+              }}
+              className="room-edit-prefix"
+            ></input>
+            <input
+              type="text"
+              onChange={(e) => {
+                let splits = e.target.value.replaceAll(" ", "").split(",");
+                setSplitsInput(splits);
+              }}
+              placeholder="Splits"
+              className="room-edit-splits"
+            ></input>
+            <div
+              onClick={() => {
+                let roomSplitbody = {
+                  room: room,
+                  categories: [
+                    {
+                      prefix: prefixInput,
+                      splits: splitsInput,
+                    },
+                  ],
+                };
+                axios
+                  .post(`${config.baseUrl}/roomMap`, roomSplitbody)
+                  .then((res) => {
+                    if (roomSplits) {
+                      setRoomSplits([
+                        ...roomSplits,
+                        ...roomSplitbody.categories,
+                      ]);
+                    } else {
+                      setRoomSplits([...roomSplitbody.categories]);
+                    }
+                  });
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div class="modal-submenu">
         <div
           className={setSelectedClass(0, "submenu-opt1")}
@@ -227,6 +380,27 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
             />
           </svg>
         </div>
+        {room && (
+          <div
+            className={setSelectedClass(2, "submenu-opt-room")}
+            onClick={() => setSelectedMenu(2)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
+            </svg>
+          </div>
+        )}
       </div>
     </div>
   );

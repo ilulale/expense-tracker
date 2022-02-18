@@ -14,14 +14,15 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
   let [prefixInput, setPrefixInput] = useState();
   let [splitsInput, setSplitsInput] = useState();
   let [roomSplits, setRoomSplits] = useState();
+  let [noteInput, setNoteInput] = useState();
 
   useEffect(async () => {
     axios.get(`${baseUrl}/${userData.id}`).then((res) => {
       setCategories(res.data.categories);
     });
     let roomdb = await axios.get(`${config.baseUrl}/room/user/${userData.id}`);
-    roomdb = roomdb.data.roomInfo.room;
-    if (roomdb) {
+    if (roomdb.data.roomInfo) {
+      roomdb = roomdb.data.roomInfo.room;
       setRoom(roomdb);
     }
     axios.get(`${config.baseUrl}/roomMap/${roomdb}`).then((res) => {
@@ -128,6 +129,10 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
                 ))}
               </div>
             )}
+            <div className="modal-expenses-edit-note">
+              <div>Note</div>
+              <div><input type="text" placeholder="Enter details" onChange={(e) => setNoteInput(e.target.value)}></input></div>
+            </div>
           </div>
           <div className="modal-options">
             <div
@@ -140,6 +145,7 @@ function Modal({ updateExpenses, loggOutUser, userData, closeModal }) {
                   at: Date.now(),
                   split: splits[0] ? splits : 0,
                   category: "expense",
+                  note: noteInput ? noteInput : null
                 };
                 updateExpenses(tmpExpense);
               }}

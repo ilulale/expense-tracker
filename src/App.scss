@@ -432,4 +432,16 @@
 }
 .room-split-selection {
   display: flex;
+  flex-wrap: wrap;
+}
+.modal-expenses-edit-note{
+  margin-top: 0.5em;
+  input{
+    width: 100%;
+  }
+}
+.card-detail-note{
+ .card-detail-note-heading{
+   font-weight: 600;
+ } 
 }

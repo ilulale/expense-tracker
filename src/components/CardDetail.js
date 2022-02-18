@@ -101,6 +101,16 @@ function CardDetail({
             })}
           </div>
         </div>
+        {detail.note &&
+          <div className="card-detail-note">
+            <div className="card-detail-note-heading">
+              Note :
+            </div>
+            <i>
+              {detail.note}
+            </i>
+          </div>
+        }
       </div>
     </div>
   );

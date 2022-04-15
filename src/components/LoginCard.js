@@ -16,6 +16,7 @@ function LoginCard({ changeLoggedInTrue }) {
 
   let logUser = (user, pass) => {
     let loginUrl = `${baseUrl}/login`;
+    console.log(loginUrl)
     let loginData = {
       user: user,
       password: pass,
